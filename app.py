@@ -1,5 +1,5 @@
 try:
-    from flask import Flask, request, jsonify  # type: ignore[import]
+    from flask import Flask, request, jsonify, render_template  # type: ignore[import]
 except ModuleNotFoundError as e:
     raise RuntimeError(
         "Flask is not installed. Install it with 'pip install flask' and try again."
@@ -107,15 +107,50 @@ def score():
     return jsonify(compute_score(conn, income))
 
 # 📊 Home endpoint
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"message": "Expense Analyzer API", "endpoints": {
-        "parse_sms": "POST /parse-sms",
-        "insights": "GET /insights",
-        "score": "GET /score",
-        "transactions": "GET /transactions"
-    }})
+def get_dashboard_summary():
+    transactions = get_all_transactions()
 
+    total_expense = sum(tx["amount"] for tx in transactions)
+
+    total_income = 50000      # Temporary value
+
+    balance = total_income - total_expense
+
+    return {
+        "total_expense": total_expense,
+        "total_income": total_income,
+        "balance": balance
+    }
+@app.route("/")
+def home():
+
+    summary = get_dashboard_summary()
+
+    return render_template(
+        "dashboard.html",
+        total_expense=summary["total_expense"],
+        total_income=summary["total_income"],
+        balance=summary["balance"]
+    )
+@app.route("/transactions-page")
+def transactions_page():
+
+    transactions = get_all_transactions()
+
+    return render_template(
+        "transactions.html",
+        transactions=transactions
+    )
+
+
+@app.route("/upload-page")
+def upload_page():
+    return render_template("upload.html")
+
+
+@app.route("/analytics-page")
+def analytics_page():
+    return render_template("analytics.html")
 
 @app.route("/transactions", methods=["GET"])
 def list_transactions():
