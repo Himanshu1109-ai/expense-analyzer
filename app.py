@@ -1,5 +1,5 @@
 try:
-    from flask import Flask, request, jsonify, render_template  # type: ignore[import]
+    from flask import Flask, request, jsonify, render_template, redirect  # type: ignore[import]
 except ModuleNotFoundError as e:
     raise RuntimeError(
         "Flask is not installed. Install it with 'pip install flask' and try again."
@@ -126,11 +126,16 @@ def home():
 
     summary = get_dashboard_summary()
 
+    transactions = get_all_transactions()
+
+    recent_transactions = transactions[-5:]
+
     return render_template(
         "dashboard.html",
         total_expense=summary["total_expense"],
         total_income=summary["total_income"],
-        balance=summary["balance"]
+        balance=summary["balance"],
+        recent_transactions=recent_transactions
     )
 @app.route("/transactions-page")
 def transactions_page():
@@ -141,6 +146,21 @@ def transactions_page():
         "transactions.html",
         transactions=transactions
     )
+@app.route("/add-transaction", methods=["POST"])
+def add_transaction():
+
+    merchant = request.form["merchant"]
+
+    amount = float(request.form["amount"])
+
+    category = request.form.get("category")
+
+    if not category:
+        category = categorize(merchant)
+
+    save_transaction(amount, merchant, category)
+
+    return redirect("/transactions-page")
 
 
 @app.route("/upload-page")

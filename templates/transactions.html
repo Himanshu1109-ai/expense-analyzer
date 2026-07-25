@@ -1,81 +1,82 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 
+<h2 class="mb-4">Transactions</h2>
 
-<h2 class="mb-4">
-    Transactions
-</h2>
+<!-- Add Expense Form -->
+<div class="card mb-4">
+    <div class="card-body">
 
+        <h4>Add New Expense</h4>
 
+        <form action="/add-transaction" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Merchant</label>
+                <input
+                    type="text"
+                    name="merchant"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input
+                    type="number"
+                    name="amount"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <input
+                    type="text"
+                    name="category"
+                    class="form-control"
+                    placeholder="Leave blank for auto category">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Add Expense
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- Transactions Table -->
 <table class="table table-bordered table-hover">
 
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Merchant</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+        </tr>
+    </thead>
 
-<thead class="table-dark">
+    <tbody>
 
-<tr>
+        {% for tx in transactions %}
 
-<th>ID</th>
+        <tr>
+            <td>{{ tx.id }}</td>
+            <td>{{ tx.merchant }}</td>
+            <td>₹ {{ tx.amount }}</td>
+            <td>{{ tx.category }}</td>
+            <td>{{ tx.date }}</td>
+        </tr>
 
-<th>Merchant</th>
+        {% endfor %}
 
-<th>Amount</th>
-
-<th>Category</th>
-
-<th>Date</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody>
-
-
-{% for tx in transactions %}
-
-
-<tr>
-
-
-<td>
-{{ tx.id }}
-</td>
-
-
-<td>
-{{ tx.merchant }}
-</td>
-
-
-<td>
-₹ {{ tx.amount }}
-</td>
-
-
-<td>
-{{ tx.category }}
-</td>
-
-
-<td>
-{{ tx.date }}
-</td>
-
-
-</tr>
-
-
-{% endfor %}
-
-
-</tbody>
-
+    </tbody>
 
 </table>
-
 
 {% endblock %}

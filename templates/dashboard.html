@@ -43,5 +43,47 @@
     </div>
 
 </div>
+<div class="card mt-4">
 
+    <div class="card-body">
+
+        <h4>Recent Transactions</h4>
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Merchant</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tx in recent_transactions %}
+
+                <tr>
+
+                    <td>{{ tx.merchant }}</td>
+
+                    <td>₹ {{ tx.amount }}</td>
+
+                    <td>{{ tx.category }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 {% endblock %}
