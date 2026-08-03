@@ -2,8 +2,85 @@
 
 {% block content %}
 
-<h2>Analytics</h2>
+<div class="container mt-4">
 
-<p>Charts and insights will be shown here.</p>
+    <h2>📊 Expense Analytics</h2>
+
+    <!-- Pie Chart -->
+    <div class="card shadow mt-4">
+        <div class="card-body">
+            <h4>🥧 Expense Distribution</h4>
+            
+            <div style="height:350px;">
+    <canvas id="expenseChart"></canvas>
+</div>
+        </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="card shadow mt-4">
+        <div class="card-body">
+            <h4>📈 Expense by Category</h4>
+
+            <div style="height:350px;">
+    <canvas id="barChart"></canvas>
+</div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+const labels = {{ labels | tojson }};
+const values = {{ values | tojson }};
+
+// ---------------- Pie Chart ----------------
+
+const pieCtx = document.getElementById("expenseChart");
+
+new Chart(pieCtx, {
+    type: "pie",
+    data: {
+        labels: labels,
+        datasets: [{
+            data: values
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// ---------------- Bar Chart ----------------
+
+const barCtx = document.getElementById("barChart");
+
+new Chart(barCtx, {
+    type: "bar",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Expenses",
+            data: values
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 
 {% endblock %}

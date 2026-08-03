@@ -33,57 +33,129 @@
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow">
-            <div class="card-body">
-                <h5>Health Score</h5>
-                <h3>85%</h3>
+<div class="col-md-3">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h5>🏥 Health Score</h5>
+
+            <h3>{{ health_score }}%</h3>
+
+
+            <div class="progress mt-3">
+
+                <div 
+                class="progress-bar"
+                role="progressbar"
+                style="width: {{ health_score }}%;">
+                
+                </div>
+
             </div>
+
+
+            {% if health_score >= 80 %}
+
+                <p class="mt-3 text-success">
+                    🟢 Excellent! Your financial health is good.
+                </p>
+
+
+            {% elif health_score >= 50 %}
+
+                <p class="mt-3 text-warning">
+                    🟡 Average. Try to control your expenses.
+                </p>
+
+
+            {% else %}
+
+                <p class="mt-3 text-danger">
+                    🔴 Poor. Reduce unnecessary spending.
+                </p>
+
+
+            {% endif %}
+
+
         </div>
+
     </div>
 
 </div>
+
+</div>
+
 <div class="card mt-4">
-
     <div class="card-body">
-
         <h4>Recent Transactions</h4>
-
         <table class="table table-striped">
-
             <thead>
-
                 <tr>
-
                     <th>Merchant</th>
                     <th>Amount</th>
                     <th>Category</th>
-
                 </tr>
-
             </thead>
-
             <tbody>
-
             {% for tx in recent_transactions %}
-
                 <tr>
-
                     <td>{{ tx.merchant }}</td>
-
                     <td>₹ {{ tx.amount }}</td>
-
                     <td>{{ tx.category }}</td>
-
                 </tr>
-
             {% endfor %}
-
             </tbody>
-
         </table>
+    </div>
+</div>
+
+<div class="card mt-4 shadow">
+
+    <div class="card-body">
+
+        <h4>🤖 AI Financial Advisor</h4>
+
+
+        <hr>
+
+
+        <h5>⚠️ Alerts</h5>
+
+        <ul>
+            {% for alert in insights.alerts %}
+                <li>{{ alert }}</li>
+            {% else %}
+                <li>No alerts. Your spending looks good 👍</li>
+            {% endfor %}
+        </ul>
+
+
+        <h5>💡 Suggestions</h5>
+
+        <ul>
+            {% for suggestion in insights.suggestions %}
+                <li>{{ suggestion }}</li>
+            {% else %}
+                <li>No suggestions available</li>
+            {% endfor %}
+        </ul>
+
+
+        <h5>🏆 Top Spending Category</h5>
+
+        <p>
+            {{ insights.top_category.name }}
+            -
+            ₹{{ insights.top_category.amount }}
+            ({{ insights.top_category.percentage }}%)
+        </p>
+
 
     </div>
 
 </div>
+
 {% endblock %}

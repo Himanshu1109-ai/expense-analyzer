@@ -4,6 +4,72 @@
 
 <h2 class="mb-4">Transactions</h2>
 
+<form method="GET" action="/transactions-page" class="mb-3">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="🔍 Search Merchant"
+                value="{{ search }}">
+
+        </div>
+
+        <div class="col-md-4">
+
+          <select name="category" class="form-select">
+
+    <option value="" {% if category == "" %}selected{% endif %}>
+        All Categories
+    </option>
+
+    <option value="food" {% if category == "food" %}selected{% endif %}>
+        Food
+    </option>
+
+    <option value="clothes" {% if category == "clothes" %}selected{% endif %}>
+        Clothes
+    </option>
+
+    <option value="travel" {% if category == "travel" %}selected{% endif %}>
+        Travel
+    </option>
+
+    <option value="other" {% if category == "other" %}selected{% endif %}>
+        Other
+    </option>
+
+</select>
+
+        </div>
+
+        <div class="col-md-2">
+
+            <button class="btn btn-primary w-100">
+                Filter
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+<div class="mb-3">
+
+    <a href="/export-excel" class="btn btn-success me-2">
+        📥 Export Excel
+    </a>
+
+    <a href="/export-pdf" class="btn btn-danger">
+        📄 Export PDF
+    </a>
+
+</div>
+</div>
 <!-- Add Expense Form -->
 <div class="card mb-4">
     <div class="card-body">
@@ -52,31 +118,48 @@
 <table class="table table-bordered table-hover">
 
     <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Merchant</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
-        </tr>
+ <tr>
+    <th>ID</th>
+    <th>Merchant</th>
+    <th>Amount</th>
+    <th>Category</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
     </thead>
 
     <tbody>
 
-        {% for tx in transactions %}
+      {% for tx in transactions %}
 
-        <tr>
-            <td>{{ tx.id }}</td>
-            <td>{{ tx.merchant }}</td>
-            <td>₹ {{ tx.amount }}</td>
-            <td>{{ tx.category }}</td>
-            <td>{{ tx.date }}</td>
-        </tr>
+<tr>
 
-        {% endfor %}
+    <td>{{ tx.id }}</td>
+    <td>{{ tx.merchant }}</td>
+    <td>₹ {{ tx.amount }}</td>
+    <td>{{ tx.category }}</td>
+    <td>{{ tx.date }}</td>
+<td>
 
-    </tbody>
+    <a href="/edit-transaction/{{ tx.id }}"
+       class="btn btn-warning btn-sm">
+        Edit
+    </a>
 
-</table>
+    <form action="/delete-transaction/{{ tx.id }}"
+          method="POST"
+          style="display:inline;">
+
+        <button class="btn btn-danger btn-sm">
+            Delete
+        </button>
+
+    </form>
+
+</td>
+
+</tr>
+
+{% endfor %}
 
 {% endblock %}

@@ -2,8 +2,41 @@
 
 {% block content %}
 
-<h2>Upload Bill</h2>
+<div class="card mt-4 shadow">
 
-<p>Upload your PDF or Image here.</p>
+    <div class="card-body">
+
+        <h2>📄 Upload Bill</h2>
+
+        <form action="/upload-bill" method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Select PDF Bill
+
+                </label>
+
+                <input
+                    class="form-control"
+                    type="file"
+                    name="bill"
+                    accept=".pdf"
+                    required>
+
+            </div>
+
+            <button class="btn btn-primary">
+
+                Upload PDF
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
